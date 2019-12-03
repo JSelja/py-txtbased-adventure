@@ -1,6 +1,6 @@
 # MAP
 
-import constants
+import roominfo
 
 # The room the player is currently in.
 currentRoom = 1
@@ -10,7 +10,7 @@ currentRoom = 1
 def move(dir):
     global currentRoom
     # Check the room data for the given direction.
-    newRoom = constants.ROOMDATA[currentRoom][dir]
+    newRoom = roominfo.ROOMDATA[currentRoom][dir]
 
     # If it's a wall, you can't move that way.
     if newRoom == 0:

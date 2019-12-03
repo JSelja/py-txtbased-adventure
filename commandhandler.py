@@ -1,6 +1,6 @@
 # COMMANDHANDLER
 
-import constants, map
+import cmdinfo, map
 
 # Parses and interprets player inputs.
 def interpretCmd(inputTerms):
@@ -8,9 +8,9 @@ def interpretCmd(inputTerms):
     vIndex = 0
     args = []
     # Identify if the verb is in the list of verbs.
-    for i in range(len(constants.VERBS)):
-        if inputTerms[0] in constants.VERBS[i]:
-            verb = constants.VERBS[i][0]
+    for i in range(len(cmdinfo.VERBS)):
+        if inputTerms[0] in cmdinfo.VERBS[i]:
+            verb = cmdinfo.VERBS[i][0]
             vIndex = i
 
     # If no verb was found, exit this function.
@@ -18,16 +18,16 @@ def interpretCmd(inputTerms):
         return interpretError('That isn’t something you know how to do.')
 
     # Identify if all required arguments are found.
-    for i in range(len(constants.REQARGS[vIndex])):
+    for i in range(len(cmdinfo.REQARGS[vIndex])):
         for term in inputTerms:
-            if term != inputTerms[0] and term in constants.REQARGS[vIndex][i]:
+            if term != inputTerms[0] and term in cmdinfo.REQARGS[vIndex][i]:
                 # Add to the interpreted arguments array.
                 args.append(term)
                 break
 
         # If nothing was appended to the arguments array, a required argument was not inputted.
         if len(args) <= i:
-            return interpretError(constants.ARGMISSINGMSG[vIndex][i])
+            return interpretError(cmdinfo.ARGMISSINGMSG[vIndex][i])
 
     # Send information to be executed.
     return executeAction(verb, args)
