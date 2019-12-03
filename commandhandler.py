@@ -1,6 +1,6 @@
 # COMMANDHANDLER
 
-import constants
+import constants, map
 
 # Parses and interprets player inputs.
 def interpretCmd(inputTerms):
@@ -39,6 +39,20 @@ def interpretError(msg):
 # Run particular functions based off of interpretted input.
 def executeAction(verb, args):
     if verb == 'move':
-        return 'You moved!'
+        if args[0] == 'north' or args[0] == 'forward':
+            dir = 0
+        elif args[0] == 'east' or args[0] == 'right':
+            dir = 1
+        elif args[0] == 'south' or args[0] == 'back':
+            dir = 2
+        elif args[0] == 'west' or args[0] == 'left':
+            dir = 3
+        elif args[0] == 'up':
+            dir = 4
+        elif args[0] == 'down':
+            dir = 5
+
+        return map.move(dir)
+
     elif verb == 'examine':
         return 'You looked around!'
