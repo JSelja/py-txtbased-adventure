@@ -2,9 +2,6 @@
 
 import constants
 
-# The message to be outputted.
-outMsg = ''
-
 # Parses and interprets player inputs.
 def interpretCmd(inputTerms):
     verb = ''
@@ -18,9 +15,7 @@ def interpretCmd(inputTerms):
 
     # If no verb was found, exit this function.
     if verb == '':
-        #outMsg = 'That isn’t something you know how to do.'
-        print("That isn't something you know how to do.")
-        return
+        return interpretError('That isn’t something you know how to do.')
 
     # Identify if all required arguments are found.
     for i in range(len(constants.REQARGS[vIndex])):
@@ -32,9 +27,18 @@ def interpretCmd(inputTerms):
 
         # If nothing was appended to the arguments array, a required argument was not inputted.
         if len(args) <= i:
-            #outMsg = constants.ARGMISSINGMSG[i]
-            print(constants.ARGMISSINGMSG[vIndex][i])
-            return
+            return interpretError(constants.ARGMISSINGMSG[vIndex][i])
 
-    # Print the work.
-    print(verb + ' ' + ''.join(args))
+    # Send information to be executed.
+    return executeAction(verb, args)
+
+# Print an error message if the expected input was not received.
+def interpretError(msg):
+    return msg
+
+# Run particular functions based off of interpretted input.
+def executeAction(verb, args):
+    if verb == 'move':
+        return 'You moved!'
+    elif verb == 'examine':
+        return 'You looked around!'

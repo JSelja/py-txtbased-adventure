@@ -8,6 +8,7 @@ import commandhandler
 import os, sys, time
 
 uInput = ''
+output = ''
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -25,4 +26,7 @@ if __name__ == "__main__":
         inputTerms = uInput.split()
 
         # Interpret the user's input.
-        commandhandler.interpretCmd(inputTerms)
+        output = commandhandler.interpretCmd(inputTerms)
+
+        # Print the output.
+        print(output)

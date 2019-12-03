@@ -2,14 +2,14 @@
 
 # List of verbs.
 VERBS = [
-    ['move', 'go', 'travel', 'head'],   # Movement
-    ['examine', 'look', 'inspect']      # Examine Item
+    ['move', 'go', 'travel', 'head'],                   # Movement
+    ['examine', 'look', 'inspect', 'investigate']       # Examine Item
 ]
 
 # List of required arguments.
 REQARGS = [
     [ ['north', 'south', 'east', 'west', 'forward', 'back', 'left', 'right', 'up', 'down'] ],   # Movement
-    [ ['room'] ]                                                                                # Examine Item
+    [ ['room'] ]
 ]
 
 # List of messages that appear when a required argument is missing.
