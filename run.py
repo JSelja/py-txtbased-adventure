@@ -4,7 +4,8 @@
 # A dynamic text adventure engine by Jakob Selja.
 # Project started on 2/12/2019
 
-import os
+import commandhandler
+import os, sys, time
 
 uInput = ''
 
@@ -12,10 +13,16 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 if __name__ == "__main__":
+    # Clear screen.
     clear()
-    print()
+    while True:
+        print()
 
-    uInput = input('  > ')
+        # Get player input.
+        uInput = input('  > ')
 
-    if uInput == 'hello':
-        print("Message recieved.")
+        # Parse input into array of terms.
+        inputTerms = uInput.split()
+
+        # Interpret the user's input.
+        commandhandler.interpretCmd(inputTerms)
