@@ -26,6 +26,7 @@ def interpretCmd(inputTerms):
                 break
 
         # If nothing was appended to the arguments array, a required argument was not inputted.
+
         if len(args) <= i:
             return interpretError(cmdinfo.ARGMISSINGMSG[vIndex][i])
 
@@ -56,3 +57,7 @@ def executeAction(verb, args):
 
     elif verb == 'examine':
         return 'You looked around!'
+
+    elif verb == 'exit':
+        print("\nThanks for playing!")
+        exit()
