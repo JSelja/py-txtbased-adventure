@@ -4,7 +4,7 @@
 # A dynamic text adventure engine by Jakob Selja.
 # Project started on 2/12/2019
 
-import commandhandler, map
+import commandhandler, roomhandler
 import os, sys, time
 
 uInput = ''
@@ -18,7 +18,7 @@ if __name__ == "__main__":
     clear()
     # DEBUG: Initial description of current room.
     print()
-    print(map.move(0, map.currentRoom))
+    print(roomhandler.move(0, roomhandler.currentRoom))
     while True:
         print()
 

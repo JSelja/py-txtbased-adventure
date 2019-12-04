@@ -1,6 +1,7 @@
 # COMMANDHANDLER
 
-import cmdinfo, map
+import roomhandler
+import data.cmdinfo as cmdinfo
 
 # Parses and interprets player inputs.
 def interpretCmd(inputTerms):
@@ -53,7 +54,7 @@ def executeAction(verb, args):
         elif args[0] == 'down':
             dir = 5
 
-        return map.move(dir)
+        return roomhandler.move(dir)
 
     elif verb == 'examine':
         return 'You looked around!'

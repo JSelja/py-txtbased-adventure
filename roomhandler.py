@@ -1,6 +1,6 @@
-# MAP
+# ROOMHANDLER
 
-import roominfo
+import data.roominfo as roominfo
 
 # The room the player is currently in.
 currentRoom = 1
