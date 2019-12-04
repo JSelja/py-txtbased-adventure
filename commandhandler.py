@@ -2,6 +2,7 @@
 
 import roomhandler
 import data.cmdinfo as cmdinfo
+import data.roominfo as roominfo
 
 # Parses and interprets player inputs.
 def interpretCmd(inputTerms):
@@ -57,7 +58,9 @@ def executeAction(verb, args):
         return roomhandler.move(dir)
 
     elif verb == 'examine':
-        return 'You looked around!'
+        # Return main description for the current room.
+        if args[0] == 'room':
+            return roominfo.DESCS[roomhandler.currentRoom][0]
 
     elif verb == 'exit':
         print("\nThanks for playing!")

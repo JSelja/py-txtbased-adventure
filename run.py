@@ -19,6 +19,8 @@ if __name__ == "__main__":
     # DEBUG: Initial description of current room.
     print()
     print(roomhandler.move(0, roomhandler.currentRoom))
+
+    # Game loop.
     while True:
         print()
 
@@ -35,4 +37,4 @@ if __name__ == "__main__":
         output = commandhandler.interpretCmd(inputTerms)
 
         # Print the output.
-        print(output)
+        print('\n' + output)
