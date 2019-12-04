@@ -63,5 +63,4 @@ def executeAction(verb, args):
             return roominfo.DESCS[roomhandler.currentRoom][0]
 
     elif verb == 'exit':
-        print("\nThanks for playing!")
-        exit()
+        return "Thanks for playing!"
