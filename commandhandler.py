@@ -23,7 +23,6 @@ def interpretCmd(inputTerms):
     for i in range(len(cmdinfo.REQARGS[vIndex])):
         for term in inputTerms:
             if term != inputTerms[0] and any(s in term for s in cmdinfo.REQARGS[vIndex][i]):
-                print(term)
                 # Add to the interpreted arguments array.
                 args.append(term)
                 break
