@@ -7,13 +7,13 @@ currentRoom = 1
 
 # Change the player's current room.
 # N = 0, E = 1, S = 2, W = 3, U = 4, D = 5
-def move(dir, warpLoc=0):
+def move(dr, warpLoc=0):
     global currentRoom
 
     # If not a warp command, move normally.
     if warpLoc == 0:
         # Check the room data for the given direction.
-        newRoom = roominfo.MAP[currentRoom][dir]
+        newRoom = roominfo.MAP[currentRoom][dr]
     # Otherwise, warp to the location.
     else:
         newRoom = warpLoc
@@ -23,9 +23,15 @@ def move(dir, warpLoc=0):
         return "You can't go that way."
     else:
         currentRoom = newRoom
+
+        # Set the outputted text with the new room's title.
+        outTxt = roominfo.DESCS[currentRoom][0].upper() + "\n"
+
         # If the room has already been visted,
-        if roominfo.ISVISITED[currentRoom]:
-            return roominfo.DESCS[currentRoom][1]
+        if roominfo.IS_VISITED[currentRoom]:
+            outTxt += roominfo.DESCS[currentRoom][2]
         else:
-            roominfo.ISVISITED[currentRoom] = True
-            return roominfo.DESCS[currentRoom][0]
+            roominfo.IS_VISITED[currentRoom] = True
+            outTxt += roominfo.DESCS[currentRoom][1]
+
+        return outTxt
