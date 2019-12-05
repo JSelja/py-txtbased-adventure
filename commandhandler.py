@@ -22,7 +22,8 @@ def interpretCmd(inputTerms):
     # Identify if all required arguments are found.
     for i in range(len(cmdinfo.REQARGS[vIndex])):
         for term in inputTerms:
-            if term != inputTerms[0] and term in cmdinfo.REQARGS[vIndex][i]:
+            if term != inputTerms[0] and any(s in term for s in cmdinfo.REQARGS[vIndex][i]):
+                print(term)
                 # Add to the interpreted arguments array.
                 args.append(term)
                 break
@@ -42,24 +43,24 @@ def interpretError(msg):
 # Run particular functions based off of interpretted input.
 def executeAction(verb, args):
     if verb == 'move':
-        if args[0] == 'north' or args[0] == 'forward':
+        if  'north' in args[0] or 'forward' in args[0]:
             dir = 0
-        elif args[0] == 'east' or args[0] == 'right':
+        elif 'east' in args[0] or 'right' in args[0]:
             dir = 1
-        elif args[0] == 'south' or args[0] == 'back':
+        elif 'south' in args[0] or 'back' in args[0]:
             dir = 2
-        elif args[0] == 'west' or args[0] == 'left':
+        elif 'west' in args[0] or 'left' in args[0]:
             dir = 3
-        elif args[0] == 'up':
+        elif 'up' in args[0]:
             dir = 4
-        elif args[0] == 'down':
+        elif 'down' in args[0]:
             dir = 5
 
         return roomhandler.move(dir)
 
     elif verb == 'examine':
         # Return main description for the current room.
-        if args[0] == 'room':
+        if 'room' in args[0]:
             return roominfo.DESCS[roomhandler.currentRoom][0]
 
     elif verb == 'exit':
