@@ -1,0 +1,16 @@
+TODO:
+
+ ROOMS AND MOVEMENT
+ * Additional room identifiers. DONE
+ * Room transition text.
+ * Locked doors.
+ * Hidden rooms.
+
+ COMMANDS
+ * Climb command - up / down movement.
+ * Exit / leave command - leave room if there is a defined exit or one direction out.
+ * Sit command - For armchair. Puts player in sitting state.
+ * Wait command - Time passes. After some time, player is told to move.
+
+ ITEMS
+ * Basic item definitions.

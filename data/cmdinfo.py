@@ -4,7 +4,7 @@
 VERBS = [
     ['move', 'go', 'travel', 'head', 'enter'],          # Movement
     ['examine', 'look', 'inspect', 'investigate'],      # Examine Item
-    ['exit']                                            # Exit
+    ['end']                                             # End
 ]
 
 # List of required arguments.
