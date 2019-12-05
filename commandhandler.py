@@ -30,7 +30,7 @@ def interpretCmd(inputTerms):
             elif cmdinfo.IDEN_ALLOWED[vIndex][i]:
                 # Check the name of each room that can be accessed from the current room,
                 for r in range(len(roominfo.MAP[roomhandler.currentRoom])):
-                    if term != inputTerms[0] and roominfo.MAP[roomhandler.currentRoom][r] > 0 and term in roominfo.DESCS[roominfo.MAP[roomhandler.currentRoom][r]][0].split():
+                    if term != inputTerms[0] and roominfo.MAP[roomhandler.currentRoom][r] > 0 and term in roominfo.DESCS[roominfo.MAP[roomhandler.currentRoom][r]][0].split() and term != 'room':
                         args.append(r)
                         break
 
