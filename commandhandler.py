@@ -17,7 +17,7 @@ def interpretCmd(inputTerms):
 
     # If no verb was found, exit this function.
     if verb == '':
-        return interpretError('That isn’t something you know how to do.')
+        return "That isn't something you know how to do."
 
     # Identify if all required arguments are found.
     for i in range(len(cmdinfo.REQ_ARGS[vIndex])):
@@ -31,7 +31,8 @@ def interpretCmd(inputTerms):
                 # Check the name of each room that can be accessed from the current room,
                 for r in range(len(roominfo.MAP[roomhandler.currentRoom])):
                     if term != inputTerms[0] and roominfo.MAP[roomhandler.currentRoom][r] > 0 and term != 'room':
-                        if term in roominfo.DESCS[roominfo.MAP[roomhandler.currentRoom][r]][0].split() or term in roominfo.IDENTIFIERS[roominfo.MAP[roomhandler.currentRoom][r]]:
+                        if term in roominfo.DESCS[roominfo.MAP[roomhandler.currentRoom][r]][0].lower().split() or term in roominfo.IDENTIFIERS[roomhandler.currentRoom][r]:
+                            args.append(term)
                             args.append(r)
                             break
 
@@ -40,20 +41,16 @@ def interpretCmd(inputTerms):
 
         # If nothing was appended to the arguments array, a required argument was not inputted.
         if len(args) <= i:
-            return interpretError(cmdinfo.ARG_MISSING_MSG[vIndex][i])
+            return cmdinfo.ARG_MISSING_MSG[vIndex][i]
 
     # Send information to be executed.
     return executeAction(verb, args)
-
-# Print an error message if the expected input was not received.
-def interpretError(msg):
-    return msg
 
 # Run particular functions based off of interpretted input.
 def executeAction(verb, args):
     if verb == 'move':
         # Set direction based off of inputted argument.
-        if  args[0] == 'north' or args[0] == 'forward':
+        if args[0] == 'north' or args[0] == 'forward':
             dr = 0
         elif args[0] == 'east' or args[0] == 'right':
             dr = 1
@@ -67,7 +64,7 @@ def executeAction(verb, args):
             dr = 5
         # If none of these were found, a room indentifier was inputted.
         else:
-            dr = int(args[0])
+            dr = int(args[1])
 
         return roomhandler.move(dr)
 
@@ -75,6 +72,14 @@ def executeAction(verb, args):
         # Return main description for the current room.
         if 'room' in args[0]:
             return roominfo.DESCS[roomhandler.currentRoom][1]
+
+    elif verb == 'enter':
+        if 'inside' in roominfo.IDENTIFIERS[roomhandler.currentRoom][args[1]] and args[0] != 'inside':
+            return roomhandler.move(int(args[1]))
+        elif args[0] == 'inside':
+            return 'What do you mean?'
+        else:
+            return "There's nothing to enter."
 
     elif verb == 'exit':
         return "Thanks for playing!"

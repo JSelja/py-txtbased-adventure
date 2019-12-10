@@ -15,12 +15,17 @@ def clear():
 
 def delay_print(s):
     for c in s:
-        sys.stdout.write(c)
-        sys.stdout.flush()
+        if c != '+':
+            sys.stdout.write(c)
+            sys.stdout.flush()
         if c == ',':
             time.sleep(0.3)
         elif c == '.':
             time.sleep(0.5)
+        elif c == '+':
+            time.sleep(1)
+        elif c == '\n':
+            pass
         else:
             time.sleep(0.04)
     sys.stdout.write('\n\n')

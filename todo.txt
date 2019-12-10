@@ -2,7 +2,7 @@ TODO:
 
  ROOMS AND MOVEMENT
  * Additional room identifiers. DONE
- * Room transition text.
+ * Room transition identifiers. DONE
  * Locked doors.
  * Hidden rooms.
 

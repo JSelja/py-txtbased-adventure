@@ -25,7 +25,7 @@ def move(dr, warpLoc=0):
         currentRoom = newRoom
 
         # Set the outputted text with the new room's title.
-        outTxt = roominfo.DESCS[currentRoom][0].upper() + "\n"
+        outTxt = roominfo.DESCS[currentRoom][0].upper() + "+\n\n"
 
         # If the room has already been visted,
         if roominfo.IS_VISITED[currentRoom]:
