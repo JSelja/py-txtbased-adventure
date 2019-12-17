@@ -1,85 +1,81 @@
 # COMMANDHANDLER
 
 import roomhandler
-import data.cmdinfo as cmdinfo
 import data.roominfo as roominfo
 
 # Parses and interprets player inputs.
 def interpretCmd(inputTerms):
-    verb = ''
-    vIndex = 0
-    args = []
-    # Identify if the verb is in the list of verbs.
-    for i in range(len(cmdinfo.VERBS)):
-        if inputTerms[0] in cmdinfo.VERBS[i]:
-            verb = cmdinfo.VERBS[i][0]
-            vIndex = i
+    verb = inputTerms[0]
+    args = inputTerms[1:]
 
-    # If no verb was found, exit this function.
-    if verb == '':
-        return "That isn't something you know how to do."
-
-    # Identify if all required arguments are found.
-    for i in range(len(cmdinfo.REQ_ARGS[vIndex])):
-        for term in inputTerms:
-            if term != inputTerms[0] and term in cmdinfo.REQ_ARGS[vIndex][i]:
-                # Add to the interpreted arguments array.
-                args.append(term)
-                break
-            # If room identifiers are allowed,
-            elif cmdinfo.IDEN_ALLOWED[vIndex][i]:
-                # Check the name of each room that can be accessed from the current room,
-                for r in range(len(roominfo.MAP[roomhandler.currentRoom])):
-                    if term != inputTerms[0] and roominfo.MAP[roomhandler.currentRoom][r] > 0 and term != 'room':
-                        if term in roominfo.DESCS[roominfo.MAP[roomhandler.currentRoom][r]][0].lower().split() or term in roominfo.IDENTIFIERS[roomhandler.currentRoom][r]:
-                            args.append(term)
-                            args.append(r)
-                            break
-
-                if len(args) > i:
-                    break
-
-        # If nothing was appended to the arguments array, a required argument was not inputted.
-        if len(args) <= i:
-            return cmdinfo.ARG_MISSING_MSG[vIndex][i]
-
-    # Send information to be executed.
-    return executeAction(verb, args)
-
-# Run particular functions based off of interpretted input.
-def executeAction(verb, args):
-    if verb == 'move':
+    if verb == 'move' or verb == 'go':
         # Set direction based off of inputted argument.
-        if args[0] == 'north' or args[0] == 'forward':
+        # Format: move {direction}
+        if 'north' in args or 'forward' in args:
             dr = 0
-        elif args[0] == 'east' or args[0] == 'right':
+        elif 'east' in args or 'right' in args:
             dr = 1
-        elif args[0] == 'south' or args[0] == 'back':
+        elif 'south' in args or 'back' in args:
             dr = 2
-        elif args[0] == 'west' or args[0] == 'left':
+        elif 'west' in args or 'left' in args:
             dr = 3
-        elif args[0] == 'up':
+        elif 'up' in args or 'upward' in args:
             dr = 4
-        elif args[0] == 'down':
+        elif 'down' in args or 'downward' in args:
             dr = 5
         # If none of these were found, a room indentifier was inputted.
         else:
-            dr = int(args[1])
+            # Format: 'move in/to/into {room}' or 'move inside {room: inside}'
+            if args[0] in ['in', 'to', 'into', 'inside', 'outside']:
+                dr = roomhandler.getDirection(args[1:])
+
+                if dr == -1 or args[0] == 'inside' and 'inside' not in roominfo.ATTRIBUTES[roomhandler.currentRoom][dr] or args[0] == 'outside' and 'outside' not in roominfo.ATTRIBUTES[roomhandler.currentRoom][dr] :
+                    return "You don't see any such place to " + verb + "."
+
+            # In this case, no proper arguments were inputted.
+            else:
+                return 'Where do you want to ' + verb + '?'
 
         return roomhandler.move(dr)
 
-    elif verb == 'examine':
-        # Return main description for the current room.
-        if 'room' in args[0]:
-            return roominfo.DESCS[roomhandler.currentRoom][1]
+    elif verb == 'enter' or verb == 'exit':
+        dr = roomhandler.getDirection(args)
 
-    elif verb == 'enter':
-        if 'inside' in roominfo.IDENTIFIERS[roomhandler.currentRoom][args[1]] and args[0] != 'inside':
-            return roomhandler.move(int(args[1]))
-        elif args[0] == 'inside':
+        if dr == -1:
+            return "You don't see any such place to " + verb + "."
+
+        # if the room is inside, enter it. If the room is outside, exit the current room into it.
+        if verb == 'enter':
+            position = 'inside'
+        else:
+            position = 'outside'
+
+        if position in roominfo.ATTRIBUTES[roomhandler.currentRoom][dr]:
+            return roomhandler.move(dr)
+        elif 'inside' in args or 'outside' in args:
             return 'What do you mean?'
         else:
-            return "There's nothing to enter."
+            return "You can't " + verb + " anything that way."
 
-    elif verb == 'exit':
+    elif verb == 'climb':
+        dr = -1
+        if args[0] == 'up':
+            dr = 4
+        elif args[0] == 'down':
+            dr = 5
+        elif args[0] == 'ladder':
+            # If there is a ladder in the room, climb in the direction it goes.
+            for r in range(2):
+                if 'ladder' in roominfo.ATTRIBUTES[roomhandler.currentRoom][4 + r]:
+                    dr = 4 + r
+
+        if dr == -1:
+            return "You can't climb that way."
+
+        return roomhandler.move(dr)
+
+    elif verb == 'stop':
         return "Thanks for playing!"
+
+    else:
+        return "That isn't something you know how to do."

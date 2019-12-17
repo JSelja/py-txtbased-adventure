@@ -5,6 +5,19 @@ import data.roominfo as roominfo
 # The room the player is currently in.
 currentRoom = 1
 
+# Return the direction a room is from the current room.
+def getDirection(args):
+    # Join the player's input to account for multi-word room names.
+    uInput = ' '.join(args)
+    # For each possible direction,
+    for r in range(len(roominfo.MAP[currentRoom])):
+        if roominfo.MAP[currentRoom][r] != 0:
+            # If the room name or an identifier is found, return its direction.
+            if roominfo.DESCS[roominfo.MAP[currentRoom][r]][0].lower() in uInput or any(s in uInput for s in roominfo.IDENTIFIERS[currentRoom][r]):
+                return r
+
+    return -1
+
 # Change the player's current room.
 # N = 0, E = 1, S = 2, W = 3, U = 4, D = 5
 def move(dr, warpLoc=0):
@@ -25,7 +38,7 @@ def move(dr, warpLoc=0):
         currentRoom = newRoom
 
         # Set the outputted text with the new room's title.
-        outTxt = roominfo.DESCS[currentRoom][0].upper() + "+\n\n"
+        outTxt = "\n" + roominfo.DESCS[currentRoom][0].upper() + "+\n\n"
 
         # If the room has already been visted,
         if roominfo.IS_VISITED[currentRoom]:
