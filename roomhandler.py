@@ -40,9 +40,10 @@ def move(dr, warpLoc=0):
         # Set the outputted text with the new room's title.
         outTxt = "\n" + roominfo.DESCS[currentRoom][0].upper() + "+\n\n"
 
-        # If the room has already been visted,
+        # If the room has already been visted, output the large description.
         if roominfo.IS_VISITED[currentRoom]:
             outTxt += roominfo.DESCS[currentRoom][2]
+        # Otherwise, output the small description.
         else:
             roominfo.IS_VISITED[currentRoom] = True
             outTxt += roominfo.DESCS[currentRoom][1]
