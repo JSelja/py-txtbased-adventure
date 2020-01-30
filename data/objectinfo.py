@@ -3,7 +3,8 @@
 # Attributes all objects possess:
 # name - A unique name for identifying the object.
 # alt-names - A list of other identifiers for the object. Doesn't neccessarily have to be unique.
-# description - Text to be returned when inspecting the object.
+# desc-room - Text to be returned when entering or examining the room.
+# desc-examine - Text to be returned when examining the object.
 # location - Which room the object initially resides in. Can be changed.
 # interactions - A dictionary of actions and their resulting text output.
 

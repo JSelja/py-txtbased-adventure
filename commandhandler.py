@@ -45,7 +45,7 @@ def interpretCmd(inputTerms):
                 dr = roomhandler.getDirection(args[1:])
 
                 # Room movement will not occur if the room wasn't found, or if the specified room isn't inside or outside when such argument is used.
-                if dr == -1 or args[0] == 'inside' and 'inside' not in roominfo.ATTRIBUTES[roomhandler.currentRoom][dr] or args[0] == 'outside' and 'outside' not in roominfo.ATTRIBUTES[roomhandler.currentRoom][dr] :
+                if dr == -1 or args[0] == 'inside' and 'inside' not in roominfo.rooms[roomhandler.currentRoom]["attributes"][dr] or args[0] == 'outside' and 'outside' not in roominfo.rooms[roomhandler.currentRoom]["attributes"][dr] :
                     return "You don't see any such place to " + verb + "."
 
             # In this case, no proper arguments were inputted.
@@ -71,7 +71,7 @@ def interpretCmd(inputTerms):
         # TODO: Output "You're already outside." if the player tries to exit while outside.
 
         # If the room is inside, enter it. If the room is outside, exit the current room into it.
-        if position in roominfo.ATTRIBUTES[roomhandler.currentRoom][dr]:
+        if position in roominfo.rooms[roomhandler.currentRoom]["attributes"][dr]:
             return roomhandler.move(dr)
         # In this case, the new room is not inside if entering or outside if exiting.
         else:
@@ -90,7 +90,7 @@ def interpretCmd(inputTerms):
         elif 'ladder' in args:
             # If there is a ladder in the room, climb in the direction it goes.
             for r in range(2):
-                if 'ladder' in roominfo.ATTRIBUTES[roomhandler.currentRoom][4 + r]:
+                if 'ladder' in roominfo.rooms[roomhandler.currentRoom]["attributes"][4 + r]:
                     dr = 4 + r
         # In this case, no proper arguments were inputted.
         else:
@@ -106,7 +106,7 @@ def interpretCmd(inputTerms):
     if verb == 'examine':
         # If looking at the room, return the current room's large description.
         if 'room' in args:
-            return roominfo.DESCS[roomhandler.currentRoom][1]
+            return roominfo.rooms[roomhandler.currentRoom]["desc-large"]
         # Otherwise, an object name may have been inputted.
         else:
             for o in objectinfo.objects:

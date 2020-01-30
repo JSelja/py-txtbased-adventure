@@ -14,7 +14,7 @@ def getDirection(args):
     for r in range(len(roominfo.MAP[currentRoom])):
         if roominfo.MAP[currentRoom][r] != 0:
             # If the room name or an identifier is found, return its direction.
-            if roominfo.DESCS[roominfo.MAP[currentRoom][r]][0].lower() in uInput or any(s in uInput for s in roominfo.IDENTIFIERS[currentRoom][r]):
+            if roominfo.rooms[roominfo.MAP[currentRoom][r]]["title"].lower() in uInput or any(s in uInput for s in roominfo.rooms[currentRoom]["identifiers"][r]):
                 return r
 
     return -1
@@ -39,15 +39,15 @@ def move(dr, warpLoc=0):
         currentRoom = newRoom
 
         # Set the outputted text with the new room's title.
-        outTxt = "\n" + roominfo.DESCS[currentRoom][0].upper() + "+\n\n"
+        outTxt = "\n" + roominfo.rooms[currentRoom]["title"].upper() + "+\n\n"
 
         # If the room has already been visted, add the small description.
-        if roominfo.IS_VISITED[currentRoom]:
-            outTxt += roominfo.DESCS[currentRoom][2]
+        if roominfo.rooms[currentRoom]["is-visited"]:
+            outTxt += roominfo.rooms[currentRoom]["desc-small"]
         # Otherwise, add the large description.
         else:
-            roominfo.IS_VISITED[currentRoom] = True
-            outTxt += roominfo.DESCS[currentRoom][1]
+            roominfo.rooms[currentRoom]["is-visited"] = True
+            outTxt += roominfo.rooms[currentRoom]["desc-large"]
 
         # Add any object desctriptions.
         for o in objectinfo.objects:
