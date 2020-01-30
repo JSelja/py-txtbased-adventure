@@ -1,11 +1,11 @@
 # COMMANDHANDLER
-# / = Interchangable verbs or arguments.
-# | = Respective verbs and arguments.
-
-import json
+# a/b = Interchangable verbs or arguments.
+# a|b = Respective verbs and arguments.
 
 import roomhandler
 import data.roominfo as roominfo
+import data.objectinfo as objectinfo
+import data.playerinfo as player
 
 # Parses and interprets player inputs.
 def interpretCmd(inputTerms):
@@ -13,11 +13,13 @@ def interpretCmd(inputTerms):
     args = inputTerms[1:]
 
     # MOVE/GO - Player travels to an adjacent room, and the new room's description is outputted.
-    # Formats:
+    # Format:
     # 'move/go {direction}'
     # 'move/go in/to/into {room}'
     # 'move/go inside|outside {room: inside|outside}'
     if verb == 'move' or verb == 'go':
+        # TODO: Don't allow movement if the player is seated.
+
         # Set direction based off of inputted argument.
         if 'north' in args or 'forward' in args:
             dr = 0
@@ -27,9 +29,9 @@ def interpretCmd(inputTerms):
             dr = 2
         elif 'west' in args or 'left' in args:
             dr = 3
-        elif 'up' in args or 'upward' in args:
+        elif 'up' in args or 'upwards' in args:
             dr = 4
-        elif 'down' in args or 'downward' in args:
+        elif 'down' in args or 'downwards' in args:
             dr = 5
 
         # If none of these were found, the player may have inputted a room identifier.
@@ -51,7 +53,7 @@ def interpretCmd(inputTerms):
 
     # ENTER/EXIT - Player travels to an adjacent room that is either inside when enterring, or outside when exiting.
     # Format: 'enter|exit {room: inside|outside}'
-    elif verb == 'enter' or verb == 'exit':
+    if verb == 'enter' or verb == 'exit':
         # See which direction the specified room is from the current room.
         dr = roomhandler.getDirection(args)
 
@@ -73,7 +75,7 @@ def interpretCmd(inputTerms):
 
     # CLIMB - Player travels upwards or downwards, or in the direction a ladder heads.
     # Format: 'climb up/down/ladder'
-    elif verb == 'climb':
+    if verb == 'climb':
         # Set direction to upwards.
         if 'up' in args or 'upward' in args:
             dr = 4
@@ -93,11 +95,70 @@ def interpretCmd(inputTerms):
         # Perform movement if successful.
         return roomhandler.move(dr)
 
+    # SIT - If there is something in the room to sit in, the player will sit down.
+    # Format:
+    # 'Sit down'
+    # 'Sit in {object}'
+    if verb == 'sit':
+        # Check for an object in the current room that the player can sit in.
+        for o in objectinfo.objects:
+            # If the player inputs the name of the object,
+            if 'down' in args or o.get("name") in args or any(s in args for s in o.get("alt-names")):
+                # If the object has the ability to sit in and is in the room, and the player isn't already sitting,
+                if "sit" in o.get("interactions").keys() and o.get("location") == roomhandler.currentRoom:
+                    if player.isSeated:
+                        return "You're already sitting down."
+                    else:
+                        # Sit the player down, and return the sitting interaction message.
+                        player.isSeated = True
+                        player.currentObj = o.get("name")
+                        return o["interactions"]["sit"]
+
+        return "You don't see anywhere comfortable to sit."
+
+
+    # STAND - If the player is sitting, they will stand up.
+    if verb == 'stand':
+        #If the player is sitting,
+        if player.isSeated:
+            # They will stand up.
+            player.isSeated = False
+            # Find the object the player is currently interacting with (the chair).
+            for o in objectinfo.objects:
+                if o.get("name") == player.currentObj:
+                    # Reset the object.
+                    player.currentObj = 0
+                    o["turnsSeated"] = 0
+                    # Return the stand message from the seat.
+                    return o["interactions"]["stand"]
+        else:
+            return "You're already standing up."
+
+    # WAIT - No action is performed.
+    # Format:
+    # '' (No input)
+    # 'Wait'
+    if verb == 'wait':
+        # If the player is sitting down, advance the turns seated counter.
+        if player.isSeated:
+            # Find the object the player is currently interacting with (the chair).
+            for o in objectinfo.objects:
+                if o.get("name") == player.currentObj:
+                    # Advance the counter.
+                    o["turnsSeated"] += 1
+
+                    # If the turn equals the value denoted in the key of the 'wait' interaction, output the text.
+                    for k in o.get("interactions").keys():
+                        if k == "wait" + str(o.get("turnsSeated")):
+                            return o["interactions"][k]
+
+        return "..."
+
+
     # DEBUG: Stop command exits the game.
     # TODO: Add final exit command that asks for the player's confirmation to exit.
-    elif verb == 'stop':
+    if verb == 'stop':
         return "Thanks for playing!"
 
     # If no defined verb was found, it isn't a known action.
-    else:
-        return "That isn't something you know how to do."
+    return "That isn't something you know how to do."

@@ -1,6 +1,7 @@
 # ROOMHANDLER
 
 import data.roominfo as roominfo
+import data.objectinfo as objectinfo
 
 # The room the player is currently in.
 currentRoom = 1
@@ -40,12 +41,17 @@ def move(dr, warpLoc=0):
         # Set the outputted text with the new room's title.
         outTxt = "\n" + roominfo.DESCS[currentRoom][0].upper() + "+\n\n"
 
-        # If the room has already been visted, output the large description.
+        # If the room has already been visted, add the large description.
         if roominfo.IS_VISITED[currentRoom]:
             outTxt += roominfo.DESCS[currentRoom][2]
-        # Otherwise, output the small description.
+        # Otherwise, add the small description.
         else:
             roominfo.IS_VISITED[currentRoom] = True
             outTxt += roominfo.DESCS[currentRoom][1]
+
+        # Add any object desctriptions.
+        for o in objectinfo.objects:
+            if o.get("location") == currentRoom:
+                outTxt += "\n" + o["description"]
 
         return outTxt

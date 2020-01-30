@@ -18,16 +18,15 @@ def delay_print(s):
         if c != '+':
             sys.stdout.write(c)
             sys.stdout.flush()
+        else:
+            time.sleep(1)
         if c == ',':
             time.sleep(0.3)
         elif c == '.':
             time.sleep(0.5)
-        elif c == '+':
-            time.sleep(1)
-        elif c == '\n':
-            pass
-        else:
+        elif c != '\n':
             time.sleep(0.04)
+    
     sys.stdout.write('\n\n')
 
 if __name__ == "__main__":
