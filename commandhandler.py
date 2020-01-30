@@ -76,7 +76,7 @@ def interpretCmd(inputTerms):
         # In this case, the new room is not inside if entering or outside if exiting.
         else:
             return "You can't " + verb + " anything that way."
-
+    
     # CLIMB (P) - Player travels upwards or downwards, or in the direction a ladder heads.
     # Format: 'climb up/down/ladder'
     if verb == 'climb':
