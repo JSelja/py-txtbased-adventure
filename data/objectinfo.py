@@ -13,7 +13,8 @@ objects = [
     {
         "name": "chair",
         "alt-names": ["armchair"],
-        "description": "A sunken leather armchair sits in the center of the room, facing the fire.",
+        "desc-room": "A sunken leather armchair sits in the center of the room, facing the fire.",
+        "desc-examine": "The armchair is made of an old, faded leather, with many long scratches along the arm rests.",
         "location": 2,
         "collectable": False,
         "interactions": {

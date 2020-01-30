@@ -26,7 +26,7 @@ def delay_print(s):
             time.sleep(0.5)
         elif c != '\n':
             time.sleep(0.04)
-    
+
     sys.stdout.write('\n\n')
 
 if __name__ == "__main__":
@@ -40,10 +40,10 @@ if __name__ == "__main__":
     while True:
 
         # Get player input.
-        uInput = input('  > ').lower()
+        uInput = 'P ' + input('  > ').lower()
 
-        if len(uInput) == 0:
-            uInput = 'wait'
+        if len(uInput) <= 2:
+            uInput = 'P wait'
 
         # Parse input into array of terms.
         inputTerms = uInput.split()
