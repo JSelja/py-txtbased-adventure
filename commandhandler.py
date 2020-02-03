@@ -3,6 +3,9 @@
 # a/b = Interchangable verbs or arguments.
 # a|b = Respective verbs and arguments.
 
+# Current defined commands:
+# MOVE / GO, ENTER, CLIMB, GET
+# EXAMINE, SIT, STAND, WAIT, EXIT
 import roomhandler
 import data.roominfo as roominfo
 import data.objectinfo as objectinfo
@@ -44,6 +47,10 @@ def interpretCmd(inputTerms):
                 # See which direction the specified room is from the current room.
                 dr = roomhandler.getDirection(args[1:])
 
+                # If the statement 'move/go inside/outside' was used, state a name is required.
+                if dr == -1 and len(args) == 1:
+                    return "Where exactly do you want to " + verb + " " + args[0] + "?"
+
                 # Room movement will not occur if the room wasn't found, or if the specified room isn't inside or outside when such argument is used.
                 if dr == -1 or args[0] == 'inside' and 'inside' not in roominfo.rooms[roomhandler.currentRoom]["attributes"][dr] or args[0] == 'outside' and 'outside' not in roominfo.rooms[roomhandler.currentRoom]["attributes"][dr] :
                     return "You don't see any such place to " + verb + "."
@@ -55,28 +62,23 @@ def interpretCmd(inputTerms):
         # Perform movement if successful.
         return roomhandler.move(dr)
 
-    # ENTER/EXIT (P) - Player travels to an adjacent room that is either inside when enterring, or outside when exiting.
-    # Format: 'enter|exit {room: inside|outside}'
-    if verb == 'enter' or verb == 'exit':
+    # ENTER (P) - Player travels to an adjacent room that is inside.
+    # Format: 'enter {room: inside}'
+    if verb == 'enter':
         # See which direction the specified room is from the current room.
         dr = roomhandler.getDirection(args)
 
         # Room movement will not occur if the room wasn't found.
         if dr == -1:
-            return "You don't see any such place to " + verb + "."
-
-        # Set the attribute to search for based on the command.
-        position = 'inside' if verb == 'enter' else 'outside'
-
-        # TODO: Output "You're already outside." if the player tries to exit while outside.
+            return "You don't see any such place to enter."
 
         # If the room is inside, enter it. If the room is outside, exit the current room into it.
-        if position in roominfo.rooms[roomhandler.currentRoom]["attributes"][dr]:
+        if 'inside' in roominfo.rooms[roomhandler.currentRoom]["attributes"][dr]:
             return roomhandler.move(dr)
         # In this case, the new room is not inside if entering or outside if exiting.
         else:
-            return "You can't " + verb + " anything that way."
-    
+            return "You can't enter anything that way."
+
     # CLIMB (P) - Player travels upwards or downwards, or in the direction a ladder heads.
     # Format: 'climb up/down/ladder'
     if verb == 'climb':
@@ -99,6 +101,40 @@ def interpretCmd(inputTerms):
         # Perform movement if successful.
         return roomhandler.move(dr)
 
+    # GET (P,O) - Adds an object to the player's inventory.
+    # Format: 'get {object}'
+    if verb == 'get':
+        for o in objectinfo.objects:
+
+            # If the object is referenced, and it is in the current room,
+            if o.get("name") in args or any(s in args for s in o.get("alt-names")):
+                if o.get("location") == roomhandler.currentRoom:
+
+                    # And the object is collectable,
+                    if o.get("collectable"):
+
+                        # And there is room in the player's inventory,
+                        if player.currentInvWeight + o.get("weight") <= player.maxInvWeight:
+                            # Add the object and its weight to the player's inventory.
+                            player.inventory.append(o.get("name"))
+                            player.currentInvWeight += o.get("weight")
+
+                            o["location"] = 0
+
+                            return "You got the " + o.get("name") + "."
+
+                        # There isn't enough room in the player's inventory.
+                        else:
+                            return "You're carrying too much."
+
+                    # The object is not collectable.
+                    else:
+                        return "You can't get that."
+
+        # The object is not in the current room, or no correct object names were inputted.
+        return "You don't see any such thing to get."
+
+
     # EXAMINE (P) - Display full description of a room or object as requested by the player.
     # Format:
     # 'Examine room'
@@ -110,9 +146,9 @@ def interpretCmd(inputTerms):
         # Otherwise, an object name may have been inputted.
         else:
             for o in objectinfo.objects:
-                # If the object is referenced, and it is in the current room,
+                # If the object is referenced, and it is in the current room or in the player's inventory,
                 if o.get("name") in args or any(s in args for s in o.get("alt-names")):
-                    if o.get("location") == roomhandler.currentRoom:
+                    if o.get("location") == roomhandler.currentRoom or o.get("name") in player.inventory:
                         # Print the object description.
                         return o["desc-examine"]
 
@@ -181,7 +217,7 @@ def interpretCmd(inputTerms):
 
     # DEBUG: Stop command exits the game.
     # TODO: Add final exit command that asks for the player's confirmation to exit.
-    if verb == 'stop':
+    if verb == 'exit':
         return "Thanks for playing!"
 
     # If no defined verb was found, it isn't a known action.

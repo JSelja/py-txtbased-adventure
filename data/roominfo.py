@@ -36,7 +36,7 @@ rooms = [
         "is-visited": False
     }, {
         "title": "Living Room",
-        "desc-large": "You are in a cozy living space, bathed in the beautiful warmth of a crackling fireplace.\n An open door leads east, and the front door leads outside, south.",
+        "desc-large": "You are in a cozy living space, bathed in the beautiful warmth of a crackling fireplace.\nAn open door leads east, and the front door leads outside, south.",
         "desc-small": "You are in a small, fire-lit room. The front door is south, and another door leads east.",
         "identifiers": [[], [], ['cabin'], [], [], []],
         "attributes": [[], ['inside'], ['outside'], [], [], []],

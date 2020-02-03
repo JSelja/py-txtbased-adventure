@@ -31,15 +31,15 @@ objects = [
         "turnsSeated": 0
     },
     {
-        "name": "gold",
+        "name": "key",
         "alt-names": [""],
-        "desc-room": "",
-        "desc-examine": "",
+        "desc-room": "A small bronze key covered in dust sits on the empty shelf.",
+        "desc-examine": "The key is quite small, with slight engravings around the bow. They spell out the initials+ 'E.R'.",
         "location": 4,
         "collectable": True,
         "weight": 2,
         "interactions": {
-            "get": ""
+            "get": "You put the key in your pocket."
         }
     },
     {
