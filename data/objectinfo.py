@@ -6,6 +6,8 @@
 # desc-room - Text to be returned when entering or examining the room.
 # desc-examine - Text to be returned when examining the object.
 # location - Which room the object initially resides in. Can be changed.
+# collectable - Whether or not the object can be placed in the player's inventory. Collectable items require a 'get' interaction.
+# weight - How many inventory slots the object takes up. Uncollectable item's weight does not matter.
 # interactions - A dictionary of actions and their resulting text output.
 
 # Any other attributes are custom to the object and will have a corresponding comment.
@@ -18,6 +20,7 @@ objects = [
         "desc-examine": "The armchair is made of an old, faded leather, with many long scratches along the arm rests.",
         "location": 2,
         "collectable": False,
+        "weight": 0,
         "interactions": {
             "sit": "You sink into the chair. The warmth of the leather against your skin relaxes you.",
             "stand": "You can't relax for too long. You stand back out of the chair.",
@@ -26,5 +29,29 @@ objects = [
 
         # How many turns the player is sitting down for.
         "turnsSeated": 0
+    },
+    {
+        "name": "gold",
+        "alt-names": [""],
+        "desc-room": "",
+        "desc-examine": "",
+        "location": 4,
+        "collectable": True,
+        "weight": 2,
+        "interactions": {
+            "get": ""
+        }
+    },
+    {
+        "name": "",
+        "alt-names": [],
+        "desc-room": "",
+        "desc-examine": "",
+        "location": 0,
+        "collectable": True,
+        "weight": 0,
+        "interactions": {
+            "get": ""
+        }
     }
 ]
