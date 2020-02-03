@@ -17,14 +17,15 @@ objects = [
         "name": "chair",
         "alt-names": ["armchair"],
         "desc-room": "A sunken leather armchair sits in the center of the room, facing the fire.",
-        "desc-examine": "The armchair is made of an old, faded leather, with many long scratches along the arm rests.",
+        "desc-examine": "The armchair is made of an old, faded leather, with many long scratches along the arm rests.\nThe crevices are deep and full of dust, possibly hiding lost items.",
         "location": 2,
         "collectable": False,
         "weight": 0,
         "interactions": {
             "sit": "You sink into the chair. The warmth of the leather against your skin relaxes you.",
             "stand": "You can't relax for too long. You stand back out of the chair.",
-            "wait2": "As you relax in the chair, you wonder how long the fire has been burning for."
+            "wait-2": "As you relax in the chair, you wonder how long the fire has been burning for.",
+            "search": "The crevices of the chair contain some loose change. You find four silver pieces."
         },
 
         # How many turns the player is sitting down for.

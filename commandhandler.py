@@ -210,7 +210,7 @@ def interpretCmd(inputTerms):
 
                     # If the turn equals the value denoted in the key of the 'wait' interaction, output the text.
                     for k in o.get("interactions").keys():
-                        if k == "wait" + str(o.get("turnsSeated")):
+                        if k == "wait-" + str(o.get("turnsSeated")):
                             outTxt += '\n' + o["interactions"][k]
 
         return outTxt
