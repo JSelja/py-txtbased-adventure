@@ -16,16 +16,15 @@ objects = [
     {
         "name": "chair",
         "alt-names": ["armchair"],
-        "desc-room": "A sunken leather armchair sits in the center of the room, facing the fire.",
-        "desc-examine": "The armchair is made of an old, faded leather, with many long scratches along the arm rests.\nThe crevices are deep and full of dust, possibly hiding lost items.",
+        "desc-room": "There is a chair in this room.",
+        "desc-examine": "Chair description",
         "location": 2,
         "collectable": False,
         "weight": 0,
         "interactions": {
-            "sit": "You sink into the chair. The warmth of the leather against your skin relaxes you.",
-            "stand": "You can't relax for too long. You stand back out of the chair.",
-            "wait-2": "As you relax in the chair, you wonder how long the fire has been burning for.",
-            "search": "The crevices of the chair contain some loose change. You find four silver pieces."
+            "sit": "You sit down.",
+            "stand": "You stand back out of the chair.",
+            "wait-2": "You have waited in the chair."
         },
 
         # How many turns the player is sitting down for.
@@ -34,13 +33,13 @@ objects = [
     {
         "name": "key",
         "alt-names": [""],
-        "desc-room": "A small bronze key covered in dust sits on the empty shelf.",
-        "desc-examine": "The key is quite small, with slight engravings around the bow. They spell out the initials+ 'E.R'.",
+        "desc-room": "There is a key here.",
+        "desc-examine": "Key description",
         "location": 4,
         "collectable": True,
         "weight": 2,
         "interactions": {
-            "get": "You put the key in your pocket."
+            "get": "You get the key."
         }
     },
     {
