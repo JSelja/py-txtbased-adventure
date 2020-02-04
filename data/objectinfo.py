@@ -16,15 +16,16 @@ objects = [
     {
         "name": "chair",
         "alt-names": ["armchair"],
-        "desc-room": "There is a chair in this room.",
-        "desc-examine": "Chair description",
+        "desc-room": "A sunken leather armchair sits in the center of the room, facing the fire.",
+        "desc-examine": "The armchair is made of an old, faded leather, with many long scratches along the arm rests.\nThe crevices are deep and full of dust, possibly hiding lost items.",
         "location": 2,
         "collectable": False,
         "weight": 0,
         "interactions": {
-            "sit": "You sit down.",
-            "stand": "You stand back out of the chair.",
-            "wait-2": "You have waited in the chair."
+            "sit": "You sink into the chair. The warmth of the leather against your skin relaxes you.",
+            "stand": "You can't relax for too long. You stand back out of the chair.",
+            "wait-2": "As you relax in the chair, you wonder how long the fire has been burning for.",
+            "search": "The crevices of the chair contain some loose change. You find four silver pieces."
         },
 
         # How many turns the player is sitting down for.
@@ -33,25 +34,25 @@ objects = [
     {
         "name": "key",
         "alt-names": [""],
-        "desc-room": "There is a key here.",
-        "desc-examine": "Key description",
+        "desc-room": "A small bronze key covered in dust sits on the empty shelf.",
+        "desc-examine": "The key is quite small, with slight engravings around the bow. They spell out the initials+ 'E.R'.",
         "location": 4,
         "collectable": True,
         "weight": 2,
         "interactions": {
-            "get": "You get the key."
+            "get": "You put the key in your pocket."
         }
     },
     {
-        "name": "",
-        "alt-names": [],
-        "desc-room": "",
-        "desc-examine": "",
-        "location": 0,
+        "name": "clover",
+        "alt-names": ["clovers"],
+        "desc-room": "There is a patch of clovers here.",
+        "desc-examine": "One clover stands twice as high as the others. It has four leaves on it.",
+        "location": 7,
         "collectable": True,
-        "weight": 0,
+        "weight": 1,
         "interactions": {
-            "get": ""
+            "get": "You pluck the clover out of the ground and carefully slide it into your front pocket."
         }
     }
 ]
