@@ -5,10 +5,13 @@
 MAP = [
     [0, 0, 0, 0, 0, 0],
 #   [N, E, S, W, U, D]
-    [2, 0, 0, 0, 0, 0],
+    [2, 6, 5, 6, 0, 0],
     [0, 3, 1, 0, 0, 0],
     [0, 0, 0, 2, 0, 4],
-    [0, 0, 0, 0, 3, 0]
+    [0, 0, 0, 0, 3, 0],
+    [1, 6, 6, 6, 0, 0],
+    [6, 5, 6, 7, 0, 0],
+    [6, 6, 6, 6, 0, 0]
 ]
 
 # Attributes all rooms possess:
@@ -43,8 +46,7 @@ rooms = [
         "is-visited": False
     }, {
         "title": "Kitchen",
-        "desc-large": "You are in the cabin's eating area, which has clearly been ransacked. The cupboards are empty and missing their doors." +
-        "\nA wooden table is turned on its side in the middle of the room.\nA door leads to the living area west, and a southern ladder travels down an open trap door.",
+        "desc-large": "You are in the cabin's eating area, which is bare and empty.\nA door leads to the living area west, and a southern ladder travels down an open trap door.",
         "desc-small": "You are in the kitchen. A doorway leads west, and a ladder goes down through a trap door.",
         "identifiers": [[], [], [], [], [], []],
         "attributes": [[], [], [], ['inside'], [], ['inside', 'ladder']],
@@ -56,5 +58,27 @@ rooms = [
         "identifiers": [[], [], [], [], [], []],
         "attributes": [[], [], [], [], ['inside', 'ladder'], []],
         "is-visited": False
+    }, {
+        "title": "Forest Clearing",
+        "desc-large": "You are surrounded by trees. There is a dim glow eminating from a cabin not far to the north.",
+        "desc-small": "You are in the forest. There is a cabin further north.",
+        "identifiers": [['cabin'], [], [], [], [], []],
+        "attributes": [[], [], [], [], [], []],
+        "is-visited": False
+    }, {
+        "title": "Forest",
+        "desc-large": "You are in the forest. Your view is immensely dark and dense with thick trees reaching high above. Their roots have torn through the moss and earth below your feet." +
+        "\nThe wind carries a sense of danger through the air.",
+        "desc-small": "You are in the dark depths of the forest. There isn't a clear sense of direction around you.",
+        "identifiers": [[], [], [], [], [], []],
+        "attributes": [[], [], [], [], [], []],
+        "is-visited": False
+    }, {
+        "title": "Forest",
+        "desc-large": "",
+        "desc-small": "You are in the dark depths of the forest. There isn't a clear sense of direction around you.",
+        "identifiers": [[], [], [], [], [], []],
+        "attributes": [[], [], [], [], [], []],
+        "is-visited": True
     }
 ]

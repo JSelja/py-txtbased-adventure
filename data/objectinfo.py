@@ -44,15 +44,15 @@ objects = [
         }
     },
     {
-        "name": "",
-        "alt-names": [],
-        "desc-room": "",
-        "desc-examine": "",
-        "location": 0,
+        "name": "clover",
+        "alt-names": ["clovers"],
+        "desc-room": "There is a patch of clovers here.",
+        "desc-examine": "One clover stands twice as high as the others. It has four leaves on it.",
+        "location": 7,
         "collectable": True,
-        "weight": 0,
+        "weight": 1,
         "interactions": {
-            "get": ""
+            "get": "You pluck the clover out of the ground and carefully slide it into your front pocket."
         }
     }
 ]

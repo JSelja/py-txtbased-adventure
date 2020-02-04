@@ -121,7 +121,7 @@ def interpretCmd(inputTerms):
 
                             o["location"] = 0
 
-                            return "You got the " + o.get("name") + "."
+                            return o["interactions"]["get"]
 
                         # There isn't enough room in the player's inventory.
                         else:
@@ -139,10 +139,13 @@ def interpretCmd(inputTerms):
     # Format:
     # 'Examine room'
     # 'Examine {object}'
-    if verb == 'examine':
+    if verb == 'examine' or verb == 'look':
         # If looking at the room, return the current room's large description.
-        if 'room' in args:
+        if 'room' in args or verb == 'look' and len(args) == 0:
             return roominfo.rooms[roomhandler.currentRoom]["desc-large"]
+        # If the wrong grammar is used, tell the player.
+        elif verb == 'look' and args[0] != 'at':
+            return "What do you want to look at?"
         # Otherwise, an object name may have been inputted.
         else:
             for o in objectinfo.objects:
