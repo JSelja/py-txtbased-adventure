@@ -8,26 +8,20 @@ class Directions:
 
 class Room:
     """An area the player can occupy."""
-    def __init__(self, title, descLarge, descSmall, exitDir, exitLoc, exitIden, exitAttr, descLook=None):
+    def __init__(self, title, descLarge, descSmall, exits, descLook=None):
         self.title = title
         self.descLarge = descLarge
         self.descSmall = descSmall
         self.descLook = descLook if descLook is not None else descLarge
+        self.exits = exits
 
         self.isVisited = False
-        self.exits = []
-
-        for i in range(len(exitLoc)):
-            self.exits.append({
-                "direction": exitDir[i],
-                "location": exitLoc[i],
-                "identifiers": exitIden[i],
-                "attributes": exitAttr[i]
-            })
 
 
     def getRoomDescription(self):
         outTxt = ""
+
+        outTxt += "\n" + self.title.upper() + "+\n\n"
 
         if self.isVisted:
             outTxt += self.descSmall

@@ -1,5 +1,38 @@
-# ROOMINFO
+import structs.rooms as r
 
+roomdefs = {}
+
+## Room Definitions ##
+
+roomdefs["Test"] = {}
+roomdefs["Test"]["descLarge"] = "This is a large description."
+roomdefs["Test"]["descSmall"] = "This is a small description."
+
+roomdefs["Test"]["exits"] = [
+    {
+        "direction": "north",
+        "location": "Other Room",
+        "identifiers": ['place', 'etc'],
+        "attributes": ['outside']
+    },
+    {
+        "direction": "south",
+        "location": "Other other Room",
+        "identifiers": ['yo', 'what'],
+        "attributes": ['inside']
+    }
+]
+
+
+# Create room objects for each defined room.
+rooms = {}
+for key in roomdefs:
+    rooms[key] = r.Room(key, roomdefs[key]["descLarge"], roomdefs[key]["descSmall"], roomdefs[key]["exits"])
+
+# DEBUG: Test if room data is implemented.
+print(rooms["Test"].getExitByIdentifier('yo'))
+
+"""
 # Room directions.
 # 0 = Wall
 MAP = [
@@ -82,3 +115,4 @@ rooms = [
         "is-visited": True
     }
 ]
+"""
