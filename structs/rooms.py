@@ -21,9 +21,9 @@ class Room:
     def getRoomDescription(self):
         outTxt = ""
 
-        outTxt += "\n" + self.title.upper() + "+\n\n"
+        outTxt += "\n" + self.title.upper() + "\n\n"
 
-        if self.isVisted:
+        if self.isVisited:
             outTxt += self.descSmall
 
         else:

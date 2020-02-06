@@ -4,115 +4,133 @@ roomdefs = {}
 
 ## Room Definitions ##
 
-roomdefs["Test"] = {}
-roomdefs["Test"]["descLarge"] = "This is a large description."
-roomdefs["Test"]["descSmall"] = "This is a small description."
+roomdefs["Outside Cabin"] = {}
+roomdefs["Outside Cabin"]["descLarge"] = """You find yourself at the south side of a small wooden cabin.
+A lantern hanging from the southern wall swings in the breeze, illuminating an old oak doorway leading north inside.
+The dark woods surround you in all directions, swaying in the swirling winds. A small clearing lies further south."""
+roomdefs["Outside Cabin"]["descSmall"] = "You are outside, to the south of a cabin. The forest surrounds you in all directions."
 
-roomdefs["Test"]["exits"] = [
+roomdefs["Outside Cabin"]["exits"] = [
     {
-        "direction": "north",
-        "location": "Other Room",
-        "identifiers": ['place', 'etc'],
-        "attributes": ['outside']
-    },
-    {
-        "direction": "south",
-        "location": "Other other Room",
-        "identifiers": ['yo', 'what'],
+        "direction": r.Directions.NORTH,
+        "location": "Living Room",
+        "identifiers": ['cabin'],
         "attributes": ['inside']
+    }, {
+        "direction": r.Directions.SOUTH,
+        "location": "Forest Clearing",
+        "identifiers": ['clearing'],
+        "attributes": []
+    }, {
+        "direction": r.Directions.EAST,
+        "location": "Forest",
+        "identifiers": ['forest', 'woods'],
+        "attributes": []
+    }, {
+        "direction": r.Directions.WEST,
+        "location": "Forest",
+        "identifiers": [],
+        "attributes": []
     }
 ]
 
+roomdefs["Living Room"] = {}
+roomdefs["Living Room"]["descLarge"] = """You are in a cozy living space, bathed in the beautiful warmth of a crackling fireplace.
+An open door leads east, and the front door leads outside, south."""
+roomdefs["Living Room"]["descSmall"] = "You are in a small, fire-lit living room. The front door is south, and another door leads east."
+
+roomdefs["Living Room"]["exits"] = [
+    {
+        "direction": r.Directions.SOUTH,
+        "location": "Outside Cabin",
+        "identifiers": ['front door', 'entrance'],
+        "attributes": ['outside']
+    }, {
+        "direction": r.Directions.EAST,
+        "location": "Kitchen",
+        "identifiers": [],
+        "attributes": []
+    }
+]
+
+roomdefs["Kitchen"] = {}
+roomdefs["Kitchen"]["descLarge"] = """You are in the cabin's eating area, which is bare and empty.
+A door leads to the living area west, and a southern ladder travels down an open trap door."""
+roomdefs["Kitchen"]["descSmall"] = "You are in the kitchen. A doorway leads west, and a ladder goes down through a trap door."
+
+roomdefs["Kitchen"]["exits"] = [
+    {
+        "direction": r.Directions.WEST,
+        "location": "Living Room",
+        "identifiers": [],
+        "attributes": []
+    }, {
+        "direction": r.Directions.DOWN,
+        "location": "Cellar",
+        "identifiers": ['basement'],
+        "attributes": ['ladder']
+    }
+]
+
+roomdefs["Forest Clearing"] = {}
+roomdefs["Forest Clearing"]["descLarge"] = "You are surrounded by trees. There is a dim glow eminating from a cabin not far to the north."
+roomdefs["Forest Clearing"]["descSmall"] = "You are in the forest. There is a cabin further north."
+
+roomdefs["Forest Clearing"]["exits"] = [
+    {
+        "direction": r.Directions.NORTH,
+        "location": "Outside Cabin",
+        "identifiers": ['cabin'],
+        "attributes": []
+    }, {
+        "direction": r.Directions.EAST,
+        "location": "Forest",
+        "identifiers": ['forest', 'woods'],
+        "attributes": []
+    }, {
+        "direction": r.Directions.SOUTH,
+        "location": "Forest",
+        "identifiers": [],
+        "attributes": []
+    }, {
+        "direction": r.Directions.WEST,
+        "location": "Forest",
+        "identifiers": [],
+        "attributes": []
+    }
+]
+
+roomdefs["Forest"] = {}
+roomdefs["Forest"]["descLarge"] = """You are in the forest. Your view is immensely dark and dense with thick trees reaching high above.
+The ground here is rugged and uneven. Roots have torn through the moss and earth below your feet.
+The darkness and uneven terrain obscures your sense of direction."""
+roomdefs["Forest"]["descSmall"] = "You are in the dark depths of the forest. The darkness and uneven terrain obscures your sense of direction."
+
+roomdefs["Forest"]["exits"] = [
+    {
+        "direction": r.Directions.NORTH,
+        "location": "Forest",
+        "identifiers": ['forest', 'woods'],
+        "attributes": []
+    }, {
+        "direction": r.Directions.EAST,
+        "location": "Forest",
+        "identifiers": [],
+        "attributes": []
+    }, {
+        "direction": r.Directions.SOUTH,
+        "location": "Forest",
+        "identifiers": [],
+        "attributes": []
+    }, {
+        "direction": r.Directions.WEST,
+        "location": "Forest Clearing",
+        "identifiers": [],
+        "attributes": []
+    }
+]
 
 # Create room objects for each defined room.
 rooms = {}
 for key in roomdefs:
     rooms[key] = r.Room(key, roomdefs[key]["descLarge"], roomdefs[key]["descSmall"], roomdefs[key]["exits"])
-
-# DEBUG: Test if room data is implemented.
-print(rooms["Test"].getExitByIdentifier('yo'))
-
-"""
-# Room directions.
-# 0 = Wall
-MAP = [
-    [0, 0, 0, 0, 0, 0],
-#   [N, E, S, W, U, D]
-    [2, 6, 5, 6, 0, 0],
-    [0, 3, 1, 0, 0, 0],
-    [0, 0, 0, 2, 0, 4],
-    [0, 0, 0, 0, 3, 0],
-    [1, 6, 6, 6, 0, 0],
-    [6, 5, 6, 7, 0, 0],
-    [6, 6, 6, 6, 0, 0]
-]
-
-# Attributes all rooms possess:
-# title - The capitalised name of the room  displayed when entering.
-# desc-large - The main room description returned when first enterring or examining it.
-# desc-small - The shortened description returned when entering the room after it has already been entered.
-# identifiers - Alternative names the adjacent rooms can be identified by.
-# attributes - Special characteristics each direction possesses.
-# is-visited - Whether or not the room has already been visited.
-rooms = [
-    {
-        "title": "",
-        "desc-large": "",
-        "desc-small": "",
-        "identifiers": [[], [], [], [], [], []],
-        "attributes": [[], [], [], [], [], []],
-        "is-visited": False
-    }, {
-        "title": "Outside Cabin",
-        "desc-large": "You find yourself at the south side of a small wooden cabin.\nA lantern hanging from the southern wall swings in the breeze, illuminating an old oak doorway leading north inside." +
-        "\nThe dark woods surround you in all directions, swaying in the swirling winds.",
-        "desc-small": "You are outside, to the south of a cabin.\nThe forest surrounds you in all directions.",
-        "identifiers": [['cabin'], [], [], [], [], []],
-        "attributes": [['inside'], [], [], [], [], []],
-        "is-visited": False
-    }, {
-        "title": "Living Room",
-        "desc-large": "You are in a cozy living space, bathed in the beautiful warmth of a crackling fireplace.\nAn open door leads east, and the front door leads outside, south.",
-        "desc-small": "You are in a small, fire-lit room. The front door is south, and another door leads east.",
-        "identifiers": [[], [], ['cabin'], [], [], []],
-        "attributes": [[], ['inside'], ['outside'], [], [], []],
-        "is-visited": False
-    }, {
-        "title": "Kitchen",
-        "desc-large": "You are in the cabin's eating area, which is bare and empty.\nA door leads to the living area west, and a southern ladder travels down an open trap door.",
-        "desc-small": "You are in the kitchen. A doorway leads west, and a ladder goes down through a trap door.",
-        "identifiers": [[], [], [], [], [], []],
-        "attributes": [[], [], [], ['inside'], [], ['inside', 'ladder']],
-        "is-visited": False
-    }, {
-        "title": "Cellar",
-        "desc-large": "You are in a small basement, the moldy brick walls lined with empty shelves. A few wooden barrels sit in a corner covered with cobwebs.\nThe ladder leads up out of the cellar.",
-        "desc-small": "You are in the empty cellar. A ladder leads up into the kitchen.",
-        "identifiers": [[], [], [], [], [], []],
-        "attributes": [[], [], [], [], ['inside', 'ladder'], []],
-        "is-visited": False
-    }, {
-        "title": "Forest Clearing",
-        "desc-large": "You are surrounded by trees. There is a dim glow eminating from a cabin not far to the north.",
-        "desc-small": "You are in the forest. There is a cabin further north.",
-        "identifiers": [['cabin'], [], [], [], [], []],
-        "attributes": [[], [], [], [], [], []],
-        "is-visited": False
-    }, {
-        "title": "Forest",
-        "desc-large": "You are in the forest. Your view is immensely dark and dense with thick trees reaching high above. Their roots have torn through the moss and earth below your feet." +
-        "\nThe wind carries a sense of danger through the air.",
-        "desc-small": "You are in the dark depths of the forest. There isn't a clear sense of direction around you.",
-        "identifiers": [[], [], [], [], [], []],
-        "attributes": [[], [], [], [], [], []],
-        "is-visited": False
-    }, {
-        "title": "Forest",
-        "desc-large": "",
-        "desc-small": "You are in the dark depths of the forest. There isn't a clear sense of direction around you.",
-        "identifiers": [[], [], [], [], [], []],
-        "attributes": [[], [], [], [], [], []],
-        "is-visited": True
-    }
-]
-"""
