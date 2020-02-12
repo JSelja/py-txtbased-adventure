@@ -21,7 +21,7 @@ class Room:
     def getRoomDescription(self):
         outTxt = ""
 
-        outTxt += "\n" + self.title.upper() + "\n\n"
+        outTxt += "\n" + self.title.upper() + "+\n\n"
 
         if self.isVisited:
             outTxt += self.descSmall
@@ -74,3 +74,10 @@ class Room:
                 return e["location"]
 
         return None
+
+    def exitHasAttribute(self, loc, attr):
+        for e in self.exits:
+            if loc == e["location"]:
+                return attr in e["attributes"]
+
+        return False

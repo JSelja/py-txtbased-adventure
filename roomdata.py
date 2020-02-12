@@ -48,7 +48,7 @@ roomdefs["Living Room"]["exits"] = [
     }, {
         "direction": r.Directions.EAST,
         "location": "Kitchen",
-        "identifiers": [],
+        "identifiers": ['kitchen'],
         "attributes": []
     }
 ]
@@ -62,12 +62,27 @@ roomdefs["Kitchen"]["exits"] = [
     {
         "direction": r.Directions.WEST,
         "location": "Living Room",
-        "identifiers": [],
+        "identifiers": ['living room', 'fireplace'],
         "attributes": []
     }, {
         "direction": r.Directions.DOWN,
         "location": "Cellar",
-        "identifiers": ['basement'],
+        "identifiers": ['cellar', 'basement', 'trap door'],
+        "attributes": ['inside', 'ladder']
+    }
+]
+
+roomdefs["Cellar"] = {}
+roomdefs["Cellar"]["descLarge"] = """You are in the cabin's cellar area. A few empty shelves are built into the dirt and brick walls.
+Strange vines have sprouted through cracks in the floor. The air smells of damp soil.
+A ladder leads up out of the cellar."""
+roomdefs["Cellar"]["descSmall"] = "You are in a damp, overgrown basement. A ladder leads up behind you."
+
+roomdefs["Cellar"]["exits"] = [
+    {
+        "direction": r.Directions.UP,
+        "location": "Kitchen",
+        "identifiers": ['kitchen'],
         "attributes": ['ladder']
     }
 ]

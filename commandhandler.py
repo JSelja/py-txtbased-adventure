@@ -1,58 +1,46 @@
-# COMMANDHANDLER
-# Brackets denote a command is usable by Player (P), or Object (O).
 # a/b = Interchangable verbs or arguments.
 # a|b = Respective verbs and arguments.
 
 # Current defined commands:
 # MOVE / GO, ENTER, CLIMB, GET
 # EXAMINE, SIT, STAND, WAIT, EXIT
-import roomhandler
-import data.roominfo as roominfo
-import data.objectinfo as objectinfo
-import data.playerinfo as player
+import roomdata as r
+
+# DEBUG: Placeholder current room, will be in player object.
+currentRoom = r.rooms["Outside Cabin"]
 
 # Parses and interprets player inputs.
-def interpretCmd(inputTerms):
-    user = inputTerms[0]
-    verb = inputTerms[1]
-    args = inputTerms[2:]
+def interpretCmd(uInput):
+    global currentRoom
 
-    # MOVE/GO (P,O) - Player travels to an adjacent room, and the new room's description is outputted.
+    inputTerms = uInput.split()
+    verb = inputTerms[0]
+    args = inputTerms[1:]
+
+    # MOVE/GO - Player travels to an adjacent room, and the new room's description is outputted.
     # Format:
     # 'move/go {direction}'
     # 'move/go in/to/into {room}'
     # 'move/go inside|outside {room: inside|outside}'
     if verb == 'move' or verb == 'go':
         # Don't allow movement if the player is seated.
-        if player.isSeated:
-            return "You can't " + verb + " anywhere while sitting down."
+        #if player.isSeated:
+        #    return "You can't " + verb + " anywhere while sitting down."
 
         # Set direction based off of inputted argument.
-        if 'north' in args or 'forward' in args:
-            dr = 0
-        elif 'east' in args or 'right' in args:
-            dr = 1
-        elif 'south' in args or 'back' in args:
-            dr = 2
-        elif 'west' in args or 'left' in args:
-            dr = 3
-        elif 'up' in args or 'upwards' in args:
-            dr = 4
-        elif 'down' in args or 'downwards' in args:
-            dr = 5
+        newRoom = currentRoom.getExitByDirection(uInput)
 
         # If none of these were found, the player may have inputted a room identifier.
-        else:
+        if newRoom == None:
             if args[0] in ['in', 'to', 'into', 'inside', 'outside']:
-                # See which direction the specified room is from the current room.
-                dr = roomhandler.getDirection(args[1:])
+                newRoom = currentRoom.getExitByIdentifier(uInput)
 
                 # If the statement 'move/go inside/outside' was used, state a name is required.
-                if dr == -1 and len(args) == 1:
+                if newRoom == None and len(args) == 1:
                     return "Where exactly do you want to " + verb + " " + args[0] + "?"
 
                 # Room movement will not occur if the room wasn't found, or if the specified room isn't inside or outside when such argument is used.
-                if dr == -1 or args[0] == 'inside' and 'inside' not in roominfo.rooms[roomhandler.currentRoom]["attributes"][dr] or args[0] == 'outside' and 'outside' not in roominfo.rooms[roomhandler.currentRoom]["attributes"][dr] :
+                if newRoom == None or args[0] == 'inside' and currentRoom.exitHasAttribute(newRoom, 'inside') == False or args[0] == 'outside' and currentRoom.exitHasAttribute(newRoom, 'outside') == False:
                     return "You don't see any such place to " + verb + "."
 
             # In this case, no proper arguments were inputted.
@@ -60,47 +48,49 @@ def interpretCmd(inputTerms):
                 return 'Where do you want to ' + verb + '?'
 
         # Perform movement if successful.
-        return roomhandler.move(dr)
+        currentRoom = r.rooms[newRoom]
+        return currentRoom.getRoomDescription()
 
-    # ENTER (P) - Player travels to an adjacent room that is inside.
+
+    # ENTER - Player travels to an adjacent room that is inside.
     # Format: 'enter {room: inside}'
     if verb == 'enter':
         # See which direction the specified room is from the current room.
-        dr = roomhandler.getDirection(args)
+        newRoom = currentRoom.getExitByIdentifier(uInput)
 
         # Room movement will not occur if the room wasn't found.
-        if dr == -1:
+        if newRoom == None:
             return "You don't see any such place to enter."
 
         # If the room is inside, enter it. If the room is outside, exit the current room into it.
-        if 'inside' in roominfo.rooms[roomhandler.currentRoom]["attributes"][dr]:
-            return roomhandler.move(dr)
+        if currentRoom.exitHasAttribute(newRoom, 'inside'):
+            currentRoom = r.rooms[newRoom]
+            return currentRoom.getRoomDescription()
         # In this case, the new room is not inside if entering or outside if exiting.
         else:
             return "You can't enter anything that way."
 
-    # CLIMB (P) - Player travels upwards or downwards, or in the direction a ladder heads.
+
+    # CLIMB - Player travels upwards or downwards, or in the direction a ladder heads.
     # Format: 'climb up/down/ladder'
     if verb == 'climb':
+        newRoom = None
         # Set direction to upwards.
-        if 'up' in args or 'upwards' in args:
-            dr = 4
-        # Set direction to downwards.
-        elif 'down' in args or 'downwards' in args:
-            dr = 5
+        if 'up' in uInput or 'down' in uInput:
+            newRoom = currentRoom.getExitByDirection(uInput)
         # Set direction to the ladder's destination.
         elif 'ladder' in args:
-            # If there is a ladder in the room, climb in the direction it goes.
-            for r in range(2):
-                if 'ladder' in roominfo.rooms[roomhandler.currentRoom]["attributes"][4 + r]:
-                    dr = 4 + r
+            newRoom = currentRoom.getExitByAttribute('ladder')
+
         # In this case, no proper arguments were inputted.
-        else:
+        if newRoom = None:
             return "You can't climb that way."
 
         # Perform movement if successful.
-        return roomhandler.move(dr)
+        currentRoom = r.rooms[newRoom]
+        return currentRoom.getRoomDescription()
 
+    """
     # GET (P,O) - Adds an object to the player's inventory.
     # Format: 'get {object}'
     if verb == 'get':
@@ -218,6 +208,7 @@ def interpretCmd(inputTerms):
 
         return outTxt
 
+    """
     # DEBUG: Stop command exits the game.
     # TODO: Add final exit command that asks for the player's confirmation to exit.
     if verb == 'exit':
@@ -225,3 +216,4 @@ def interpretCmd(inputTerms):
 
     # If no defined verb was found, it isn't a known action.
     return "That isn't something you know how to do."
+    
