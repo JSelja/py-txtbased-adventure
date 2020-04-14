@@ -1,4 +1,6 @@
 import structs.rooms as r
+import structs.items as i
+import time
 
 roomdefs = {}
 
@@ -49,7 +51,7 @@ roomdefs["Living Room"]["exits"] = [
         "direction": r.Directions.EAST,
         "location": "Kitchen",
         "identifiers": ['kitchen'],
-        "attributes": []
+        "attributes": ['inside']
     }
 ]
 
@@ -63,7 +65,7 @@ roomdefs["Kitchen"]["exits"] = [
         "direction": r.Directions.WEST,
         "location": "Living Room",
         "identifiers": ['living room', 'fireplace'],
-        "attributes": []
+        "attributes": ['inside']
     }, {
         "direction": r.Directions.DOWN,
         "location": "Cellar",
@@ -83,7 +85,26 @@ roomdefs["Cellar"]["exits"] = [
         "direction": r.Directions.UP,
         "location": "Kitchen",
         "identifiers": ['kitchen'],
-        "attributes": ['ladder']
+        "attributes": ['inside', 'ladder']
+    }
+]
+
+roomdefs["Cellar"]["items"] = [
+    {
+        "name": "Coin",
+        "identifiers": ['coin', 'bronze'],
+        "descriptions": {
+            "room": "A small bronze coin covered in dust sits on one of the empty shelves.",
+            "look": "The coin is quite small, with elegant, cursive engravings one side. They spell out the initials 'E.V.R'."
+        },
+        "isCollectable": True,
+        "weight": 1,
+        "interactions": {
+            "get": {
+                "text": "You put the small bronze coin in your pocket.",
+                "action": None
+            }
+        }
     }
 ]
 
@@ -145,7 +166,11 @@ roomdefs["Forest"]["exits"] = [
     }
 ]
 
-# Create room objects for each defined room.
+# Create room items for each defined room.
 rooms = {}
 for key in roomdefs:
-    rooms[key] = r.Room(key, roomdefs[key]["descLarge"], roomdefs[key]["descSmall"], roomdefs[key]["exits"])
+    itemList = {}
+    for currentItem in roomdefs[key].get("items", {}):
+        itemList[currentItem["name"]] = i.Item(currentItem["name"], currentItem["identifiers"], key, currentItem["descriptions"]["room"], currentItem["descriptions"]["look"], currentItem["isCollectable"], currentItem["weight"], currentItem["interactions"])
+
+    rooms[key] = r.Room(key, roomdefs[key]["descLarge"], roomdefs[key]["descSmall"], roomdefs[key].get("descLook", None), roomdefs[key]["exits"], itemList)

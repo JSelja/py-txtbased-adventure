@@ -4,7 +4,7 @@
 # A dynamic text adventure engine by Jakob Selja.
 # Project started on 2/12/2019
 
-import commandhandler, roomdata
+import commandhandler
 import os, sys, time
 
 uInput = ''
@@ -20,14 +20,13 @@ def delay_print(s):
             sys.stdout.flush()
 
         if c == ',':
-            time.sleep(0.2)
-        elif c == '.':
             time.sleep(0.3)
+        elif c == '.':
+            time.sleep(0.4)
         elif c == '+':
-            time.sleep(0.35)
+            time.sleep(0.5)
         elif c != '\n':
-            #time.sleep(0.05)
-            pass
+            time.sleep(0.04)
 
     sys.stdout.write('\n\n')
 
@@ -36,7 +35,7 @@ if __name__ == "__main__":
     clear()
     # DEBUG: Initial description of current room.
     print()
-    delay_print(roomdata.rooms["Outside Cabin"].getRoomDescription())
+    delay_print(commandhandler.currentRoom.getRoomDescription())
 
     # Game loop.
     while True:
@@ -53,7 +52,7 @@ if __name__ == "__main__":
         # Print the output.
         delay_print('\n' + output)
 
-        # Close if the exit command was inputted.
+        # DEBUG: Placeholder close if the exit command was inputted.
         if output == "Thanks for playing!":
             time.sleep(1)
             exit()

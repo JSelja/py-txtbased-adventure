@@ -6,8 +6,8 @@
 # EXAMINE, SIT, STAND, WAIT, EXIT
 import roomdata as r
 
-# DEBUG: Placeholder current room, will be in player object.
-currentRoom = r.rooms["Outside Cabin"]
+# DEBUG: Placeholder current room, will be in player class.
+currentRoom = r.rooms["Cellar"]
 
 # Parses and interprets player inputs.
 def interpretCmd(uInput):
@@ -83,7 +83,7 @@ def interpretCmd(uInput):
             newRoom = currentRoom.getExitByAttribute('ladder')
 
         # In this case, no proper arguments were inputted.
-        if newRoom = None:
+        if newRoom == None:
             return "You can't climb that way."
 
         # Perform movement if successful.
@@ -91,44 +91,44 @@ def interpretCmd(uInput):
         return currentRoom.getRoomDescription()
 
     """
-    # GET (P,O) - Adds an object to the player's inventory.
-    # Format: 'get {object}'
+    # GET (P,O) - Adds an item to the player's inventory.
+    # Format: 'get {item}'
     if verb == 'get':
-        for o in objectinfo.objects:
+        for i in iteminfo.items:
 
-            # If the object is referenced, and it is in the current room,
-            if o.get("name") in args or any(s in args for s in o.get("alt-names")):
-                if o.get("location") == roomhandler.currentRoom:
+            # If the item is referenced, and it is in the current room,
+            if i.get("name") in args or any(s in args for s in i.get("alt-names")):
+                if i.get("location") == roomhandler.currentRoom:
 
-                    # And the object is collectable,
-                    if o.get("collectable"):
+                    # And the item is collectable,
+                    if i.get("collectable"):
 
                         # And there is room in the player's inventory,
-                        if player.currentInvWeight + o.get("weight") <= player.maxInvWeight:
-                            # Add the object and its weight to the player's inventory.
-                            player.inventory.append(o.get("name"))
-                            player.currentInvWeight += o.get("weight")
+                        if player.currentInvWeight + i.get("weight") <= player.maxInvWeight:
+                            # Add the item and its weight to the player's inventory.
+                            player.inventory.append(i.get("name"))
+                            player.currentInvWeight += i.get("weight")
 
-                            o["location"] = 0
+                            i["location"] = 0
 
-                            return o["interactions"]["get"]
+                            return i["interactions"]["get"]
 
                         # There isn't enough room in the player's inventory.
                         else:
                             return "You're carrying too much."
 
-                    # The object is not collectable.
+                    # The item is not collectable.
                     else:
                         return "You can't get that."
 
-        # The object is not in the current room, or no correct object names were inputted.
+        # The item is not in the current room, or no correct item names were inputted.
         return "You don't see any such thing to get."
 
 
-    # EXAMINE (P) - Display full description of a room or object as requested by the player.
+    # EXAMINE (P) - Display full description of a room or item as requested by the player.
     # Format:
     # 'Examine room'
-    # 'Examine {object}'
+    # 'Examine {item}'
     if verb == 'examine' or verb == 'look':
         # If looking at the room, return the current room's large description.
         if 'room' in args or verb == 'look' and len(args) == 0:
@@ -136,13 +136,13 @@ def interpretCmd(uInput):
         # If the wrong grammar is used, tell the player.
         elif verb == 'look' and args[0] != 'at':
             return "What do you want to look at?"
-        # Otherwise, an object name may have been inputted.
+        # Otherwise, an item name may have been inputted.
         else:
-            for o in objectinfo.objects:
-                # If the object is referenced, and it is in the current room or in the player's inventory,
+            for o in iteminfo.items:
+                # If the item is referenced, and it is in the current room or in the player's inventory,
                 if o.get("name") in args or any(s in args for s in o.get("alt-names")):
                     if o.get("location") == roomhandler.currentRoom or o.get("name") in player.inventory:
-                        # Print the object description.
+                        # Print the item description.
                         return o["desc-examine"]
 
             # In this case, no proper arguments were inputted.
@@ -151,13 +151,13 @@ def interpretCmd(uInput):
     # SIT (P) - If there is something in the room to sit in, the player will sit down.
     # Format:
     # 'Sit down'
-    # 'Sit in {object}'
+    # 'Sit in {item}'
     if verb == 'sit':
-        # Check for an object in the current room that the player can sit in.
-        for o in objectinfo.objects:
-            # If the player inputs the name of the object,
+        # Check for an item in the current room that the player can sit in.
+        for o in iteminfo.items:
+            # If the player inputs the name of the item,
             if 'down' in args or o.get("name") in args or any(s in args for s in o.get("alt-names")):
-                # If the object has the ability to sit in and is in the room, and the player isn't already sitting,
+                # If the item has the ability to sit in and is in the room, and the player isn't already sitting,
                 if "sit" in o.get("interactions").keys() and o.get("location") == roomhandler.currentRoom:
                     if player.isSeated:
                         return "You're already sitting down."
@@ -176,10 +176,10 @@ def interpretCmd(uInput):
         if player.isSeated:
             # They will stand up.
             player.isSeated = False
-            # Find the object the player is currently interacting with (the chair).
-            for o in objectinfo.objects:
+            # Find the item the player is currently interacting with (the chair).
+            for o in iteminfo.items:
                 if o.get("name") == player.currentObj:
-                    # Reset the object.
+                    # Reset the item.
                     player.currentObj = 0
                     o["turnsSeated"] = 0
                     # Return the stand message from the seat.
@@ -195,8 +195,8 @@ def interpretCmd(uInput):
         outTxt = "..."
         # If the player is sitting down, advance the turns seated counter.
         if player.isSeated:
-            # Find the object the player is currently interacting with (the chair).
-            for o in objectinfo.objects:
+            # Find the item the player is currently interacting with (the chair).
+            for o in iteminfo.items:
                 if o.get("name") == player.currentObj:
                     # Advance the counter.
                     o["turnsSeated"] += 1
@@ -216,4 +216,3 @@ def interpretCmd(uInput):
 
     # If no defined verb was found, it isn't a known action.
     return "That isn't something you know how to do."
-    

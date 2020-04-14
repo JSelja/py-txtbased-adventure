@@ -1,3 +1,4 @@
+
 class Directions:
     NORTH = 0
     EAST = 1
@@ -8,28 +9,31 @@ class Directions:
 
 class Room:
     """An area the player can occupy."""
-    def __init__(self, title, descLarge, descSmall, exits, descLook=None):
+    def __init__(self, title, descLarge, descSmall, descLook, exits, items):
         self.title = title
         self.descLarge = descLarge
         self.descSmall = descSmall
         self.descLook = descLook if descLook is not None else descLarge
         self.exits = exits
+        self.items = items
 
         self.isVisited = False
 
 
-    def getRoomDescription(self):
+    def getRoomDescription(self, getDescLarge=False):
+        """Returns a description of the room and the items in it."""
         outTxt = ""
 
         outTxt += "\n" + self.title.upper() + "+\n\n"
 
-        if self.isVisited:
+        if self.isVisited and getDescLarge == False:
             outTxt += self.descSmall
 
         else:
             outTxt += self.descLarge
 
-        # TODO: Add each object description that is present in the room. Taken from array of object instances.
+        for i in self.items:
+            outTxt += "\n" + self.items[i].descRoom
 
         return outTxt
 
@@ -81,3 +85,17 @@ class Room:
                 return attr in e["attributes"]
 
         return False
+
+    def getItemObj(self, iden):
+        for i in self.items:
+            if any(s in iden for s in self.items[i].identifiers):
+                return self.items[i]
+
+        return None
+
+    def addItemToRoom(self, item):
+        self.items[item.name] = item
+
+    def removeItemFromRoom(self, name):
+        removedItem = self.items.pop(name, None)
+        return removedItem
