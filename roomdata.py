@@ -76,7 +76,8 @@ roomdefs["Kitchen"]["exits"] = [
 
 roomdefs["Cellar"] = {}
 roomdefs["Cellar"]["descLarge"] = """You are in the cabin's cellar area. A few empty shelves are built into the dirt and brick walls.
-Strange vines have sprouted through cracks in the floor. The air smells of damp soil.
+Strange vines have sprouted through cracks in the floor, twisting rigidly under your feet and tightly gripping one another, as if to suffocate them.
+The air smells of damp soil.
 A ladder leads up out of the cellar."""
 roomdefs["Cellar"]["descSmall"] = "You are in a damp, overgrown basement. A ladder leads up behind you."
 
@@ -98,6 +99,7 @@ roomdefs["Cellar"]["items"] = [
             "look": "The coin is quite small, with elegant, cursive engravings one side. They spell out the initials 'E.V.R'."
         },
         "isCollectable": True,
+        "revealed": True,
         "weight": 1,
         "interactions": {
             "get": {
@@ -171,6 +173,6 @@ rooms = {}
 for key in roomdefs:
     itemList = {}
     for currentItem in roomdefs[key].get("items", {}):
-        itemList[currentItem["name"]] = i.Item(currentItem["name"], currentItem["identifiers"], key, currentItem["descriptions"]["room"], currentItem["descriptions"]["look"], currentItem["isCollectable"], currentItem["weight"], currentItem["interactions"])
+        itemList[currentItem["name"]] = i.Item(currentItem["name"], currentItem["identifiers"], key, currentItem["descriptions"]["room"], currentItem["descriptions"]["look"], currentItem["isCollectable"], currentItem["revealed"], currentItem["weight"], currentItem["interactions"])
 
     rooms[key] = r.Room(key, roomdefs[key]["descLarge"], roomdefs[key]["descSmall"], roomdefs[key].get("descLook", None), roomdefs[key]["exits"], itemList)

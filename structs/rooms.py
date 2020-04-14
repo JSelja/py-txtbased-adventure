@@ -1,4 +1,3 @@
-
 class Directions:
     NORTH = 0
     EAST = 1
@@ -32,8 +31,11 @@ class Room:
         else:
             outTxt += self.descLarge
 
+        outTxt += "\n"
+
         for i in self.items:
-            outTxt += "\n" + self.items[i].descRoom
+            if self.items[i].revealed:
+                outTxt += "\n" + self.items[i].descRoom
 
         return outTxt
 
