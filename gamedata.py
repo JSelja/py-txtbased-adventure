@@ -7,7 +7,25 @@ roomdefs = {}
 
 ## Player Definition ##
 
-player = p.Player([], 8, '')
+initInv = [
+    {
+        "name": "Office Key",
+        "identifiers": ['office key'],
+        "descriptions": {
+            "look": "The key was once silver, but over time has been tinged orange from rust. A small yellowed tag attached by wire to the bow reads 'office', written in careful cursive lettering."
+        },
+        "isCollectable": True,
+        "revealed": True,
+        "weight": 1,
+        "interactions": {
+            "get": {
+                "default": None
+            }
+        }
+    }
+]
+
+player = p.Player(initInv, 8, '')
 
 ## Room Definitions ##
 
@@ -108,8 +126,7 @@ roomdefs["Cellar"]["items"] = [
         "weight": 1,
         "interactions": {
             "get": {
-                "text": "You put the small bronze coin in your pocket.",
-                "action": None
+                "default": None
             }
         }
     }
