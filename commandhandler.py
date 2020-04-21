@@ -4,10 +4,10 @@
 # Current defined commands:
 # MOVE / GO, ENTER, CLIMB, GET
 # EXAMINE, SIT, STAND, WAIT, EXIT
-import roomdata as r
+import gamedata as data
 
 # DEBUG: Placeholder current room, will be in player class.
-currentRoom = r.rooms["Cellar"]
+currentRoom = data.rooms["Cellar"]
 
 # Parses and interprets player inputs.
 def interpretCmd(uInput):
@@ -48,7 +48,7 @@ def interpretCmd(uInput):
                 return 'Where do you want to ' + verb + '?'
 
         # Perform movement if successful.
-        currentRoom = r.rooms[newRoom]
+        currentRoom = data.rooms[newRoom]
         return currentRoom.getRoomDescription()
 
 
@@ -64,7 +64,7 @@ def interpretCmd(uInput):
 
         # If the room is inside, enter it. If the room is outside, exit the current room into it.
         if currentRoom.exitHasAttribute(newRoom, 'inside'):
-            currentRoom = r.rooms[newRoom]
+            currentRoom = data.rooms[newRoom]
             return currentRoom.getRoomDescription()
         # In this case, the new room is not inside if entering or outside if exiting.
         else:
@@ -87,7 +87,7 @@ def interpretCmd(uInput):
             return "You can't climb that way."
 
         # Perform movement if successful.
-        currentRoom = r.rooms[newRoom]
+        currentRoom = data.rooms[newRoom]
         return currentRoom.getRoomDescription()
 
     """

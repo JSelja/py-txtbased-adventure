@@ -1,8 +1,13 @@
+import structs.player as p
 import structs.rooms as r
 import structs.items as i
 import time
 
 roomdefs = {}
+
+## Player Definition ##
+
+player = p.Player([], 8, '')
 
 ## Room Definitions ##
 
